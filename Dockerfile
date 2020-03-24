@@ -1,13 +1,21 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:5.0 AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1-alpine AS build
 
-WORKDIR /app
+ENV APP_DIR /app
 
-COPY . ./
+RUN mkdir -p ${APP_DIR}
 
-RUN dotnet publish src/Hello.Interface/Hello.Interface.csproj --configuration Release --output out
+RUN addgroup -S projects && adduser -S projects -G projects
 
-FROM mcr.microsoft.com/dotnet/core/runtime:5.0
+WORKDIR ${APP_DIR}
 
-COPY --from=build /app/out .
+COPY . .
 
-ENTRYPOINT [ "dotnet", "Hello.Interface.dll" ]
+RUN chown -R projects:projects ${APP_DIR}
+
+USER projects
+
+RUN dotnet build ${APP_DIR}/src/Hello.Interface/Hello.Interface.csproj
+
+RUN dotnet build ${APP_DIR}/src/Hello.Interface.Tests/Hello.Interface.Tests.csproj
+
+ENTRYPOINT ["/bin/sh"]
