@@ -6,7 +6,7 @@ namespace Hello.Interface
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine("Hello, Pluralsight!");
+            Console.WriteLine("Hello World");
         }
     }
 }
