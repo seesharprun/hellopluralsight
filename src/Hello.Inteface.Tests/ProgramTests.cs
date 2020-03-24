@@ -9,7 +9,7 @@ namespace Hello.Interface.Tests
         [Fact]
         public void RunPrintsConsoleMessage()
         {
-            string expected = "Hello, Pluralsight!";
+            string expected = $"Hello, Pluralsight!{Environment.NewLine}";
             using StringWriter writer = new StringWriter();
             Console.SetOut(writer);
             Program.Main(new string[]{});
